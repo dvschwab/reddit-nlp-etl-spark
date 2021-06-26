@@ -3,6 +3,9 @@
 *.xz
 *.zst
 
+# Reddit posts
+Reddit_Posts/zipped/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
