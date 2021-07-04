@@ -3,6 +3,9 @@
 *.xz
 *.zst
 
+# VSCode
+.vscode
+
 # Reddit posts
 Reddit_Posts/zipped/
 
