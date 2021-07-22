@@ -1,4 +1,4 @@
-name: heart-disease-deploy
+name: data-science-template
 channels:
   - defaults
   - conda-forge
