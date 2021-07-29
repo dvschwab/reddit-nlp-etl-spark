@@ -1,13 +1,8 @@
 # reddit NLP ETL prototype
 
 # This code prototypes a Spark workflow that retrieves data sets of compressed reddit posts
-# and outputs TF-IDF scores for each post. After processing, a sample of records is exported
-# to Amazon's DynamoDB for further analysis by a data science team.
-
-# Initialize Spark instance
-
-import findspark
-findspark.init()
+# and outputs TF-IDF scores for each post. After processing, the records can be stored in
+# an HDFS instance, an S3 bucket, or a local file system (for small jobs and testing).
 
 # Imports
 
@@ -15,8 +10,9 @@ import argparse
 from pyspark.sql import SparkSession
 import time
 
-from get_posts import get_file, unzip_file
-from nlp_pipeline import tokenize, remove_stopwords, hasher, tfidf_calc
+from data_retrieval.get_posts import get_file, unzip_file
+from data_analysis.nlp_pipeline import tokenize, remove_stopwords, hasher, tfidf_calc
+from data_storage.block_level import store_hdfs, store_local
 
 ## Main Function
 
@@ -30,13 +26,19 @@ if __name__ == '__main__':
 
   # Start Spark session
 
-  spark = SparkSession.builder.appName("RedditNlpEtl").getOrCreate()
+  spark = SparkSession \
+    .builder \
+    .appName("RedditNlpEtl") \
+    .config("reddit_etl_config.yaml") \
+    .getOrCreate()
+  
   sc = spark.sparkContext
 
   # Get start and end year from user args
 
   parser = argparse.ArgumentParser()
   parser.add_argument("url_list", help="text file of URLs to call, one URL per line")
+  parser.add_argument("-l", "--local", help="local storage path")
   args = parser.parse_args()
   
   # Read list of URLS from file and make list
@@ -77,3 +79,7 @@ if __name__ == '__main__':
 
   # Display concluding time
   print(f'\nScript concluded at', {time.asctime()})
+
+  # Store data locally for testing
+  if args.local:
+    store_local(reddit_tfidf_df, args.local)

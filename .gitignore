@@ -1,6 +1,9 @@
 # VS Code IDE local storage
 .vscode
 
+# Data files
+Reddit_Posts/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
