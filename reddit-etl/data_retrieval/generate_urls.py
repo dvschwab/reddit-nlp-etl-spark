@@ -61,8 +61,6 @@ def generate_urls(start_year, end_year):
             else:
                 file = 'RC_' + str(year) + '-' + str(month) + extension
 
-            # Verify URL_STUB is unchanged, since it's global
-            assert(URL_STUB == 'https://files.pushshift.io/reddit/comments/', f'Constant URL_STUB has been changed to {URL_STUB}')
             file_urls.append(URL_STUB + file)
     
     return file_urls
