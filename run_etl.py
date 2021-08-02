@@ -10,9 +10,9 @@ import argparse
 from pyspark.sql import SparkSession
 import time
 
-from data_retrieval.get_posts import get_file, unzip_file
-from data_analysis.nlp_pipeline import tokenize, remove_stopwords, hasher, tfidf_calc
-from data_storage.block_level import store_hdfs, store_local
+from reddit_etl.data_retrieval.remote import get_file, unzip_bz2_file_to_text
+import reddit_etl.data_analysis.nlp_pipeline as nlp
+from reddit_etl.data_storage.block_level import save_file_to_local
 
 ## Main Function
 
@@ -23,23 +23,22 @@ from data_storage.block_level import store_hdfs, store_local
   # outputs TF-IDF scores for each post to a new column.
 
 if __name__ == '__main__':
-
-  # Start Spark session
-
-  spark = SparkSession \
-    .builder \
-    .appName("RedditNlpEtl") \
-    .config("reddit_etl_config.yaml") \
-    .getOrCreate()
   
-  sc = spark.sparkContext
-
-  # Get start and end year from user args
+  # Get URL list from args
+  # Optionally, get local file path to save output
 
   parser = argparse.ArgumentParser()
   parser.add_argument("url_list", help="text file of URLs to call, one URL per line")
   parser.add_argument("-l", "--local", help="local storage path")
   args = parser.parse_args()
+
+  # Start Spark session
+  spark = SparkSession \
+    .builder \
+    .appName("RedditNlpEtl") \
+    .getOrCreate()
+  
+  sc = spark.sparkContext
   
   # Read list of URLS from file and make list
   with open(args.url_list, 'rt') as f:
@@ -55,7 +54,7 @@ if __name__ == '__main__':
     print(f'Now processing', url)
 
     reddit_file = get_file(url)
-    unzipped_file = unzip_file(reddit_file)
+    unzipped_file = unzip_bz2_file_to_text(reddit_file)
 
     # Make an RDD from the file and append it to a list
     print('Generating RDD from file and appending to rdd_list\n')
@@ -63,23 +62,23 @@ if __name__ == '__main__':
 
   
   # Create Spark DataFrame from RDDs
-  print(f'Creating DataFrame\n')
+  print(f'Creating Spark DataFrame\n')
   reddit_df = spark.read.json(sc.union(rdd_list))
 
   # NLP pipeline
   print('Beginning NLP pipeline')
   print(f'\t* Tokenizing posts')
-  reddit_tokenized_df = tokenize(reddit_df)
+  reddit_tokenized_df = nlp.tokenize(reddit_df)
   print(f'\t* Removing stop words')
-  reddit_filtered_df = remove_stopwords(reddit_tokenized_df)
+  reddit_filtered_df = nlp.remove_stopwords(reddit_tokenized_df)
   print(f'\t* Hashing posts')
-  reddit_hashed_df = hasher(reddit_filtered_df)
+  reddit_hashed_df = nlp.hasher(reddit_filtered_df)
   print(f'\t* Calculating TF-IDF scores')
-  reddit_tfidf_df = tfidf_calc(reddit_hashed_df)
+  reddit_tfidf_df = nlp.tfidf_calc(reddit_hashed_df)
 
   # Display concluding time
   print(f'\nScript concluded at', {time.asctime()})
 
   # Store data locally for testing
   if args.local:
-    store_local(reddit_tfidf_df, args.local)
+    save_file_to_local(reddit_tfidf_df, args.local)
