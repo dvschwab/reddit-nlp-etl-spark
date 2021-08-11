@@ -7,3 +7,6 @@ Currently, a working prototype has been produced and tested for years 2006 and 2
 Prototype code has been refactored to the Python module reddit_etl containing the submodules *credentials*, *data_retrieval*, *data_analysis*, and *data_storage* and unit testing has begun. The Docker Spark image from bitnami is being used for the tests involving Spark itself.
 
 To facillitate storing the calculated TF-IDF scores in HBase, the Spark cluster has been reduced to 8 nodes and a 4 node Hadoop cluster has been provisioned on AWS. This is because the AWS EMR service doesn't have Spark and HBase in the same instance.
+
+## Update 8/11/2021
+Code has passed initial tests on Docker spark instance. Now building a multi-container app with a Spark gateway (i.e. ubuntu server), Spark, and HDFS for more extensive local testing before attempting deployment to AWS.
