@@ -4,6 +4,10 @@
 # Data files
 Reddit_Posts/
 
+# Local directories
+backup/
+output.csv/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -12,7 +12,7 @@ import time
 
 from reddit_etl.data_retrieval.remote import get_file, unzip_bz2_file_to_text
 import reddit_etl.data_analysis.nlp_pipeline as nlp
-from reddit_etl.data_storage.block_level import save_file_to_local
+from reddit_etl.data_storage.block_level import write_spark_dataframe_to_file
 
 ## Main Function
 
@@ -81,4 +81,4 @@ if __name__ == '__main__':
 
   # Store data locally for testing
   if args.local:
-    save_file_to_local(reddit_tfidf_df, args.local)
+    write_spark_dataframe_to_file(reddit_tfidf_df, args.local)

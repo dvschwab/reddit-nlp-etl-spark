@@ -5,7 +5,6 @@
 # This script could, in principle, be generalized to handle different URLs,
 # but the reddit URLs are too specialized to do that now.
 
-import argparse
 import requests
 import validators
 import bz2
