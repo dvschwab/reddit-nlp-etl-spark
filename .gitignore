@@ -1,12 +1,19 @@
-# VS Code IDE local storage
+# Compressed files
+*.bz2
+*.xz
+*.zst
+
+# VSCode
 .vscode
 
-# Data files
+# Reddit posts
+Reddit_Posts/zipped/
 Reddit_Posts/
 
 # Local directories
 backup/
 output.csv/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
