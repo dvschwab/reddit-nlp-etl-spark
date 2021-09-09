@@ -8,6 +8,12 @@
 
 # Reddit posts
 Reddit_Posts/zipped/
+Reddit_Posts/
+
+# Local directories
+backup/
+output.csv/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
