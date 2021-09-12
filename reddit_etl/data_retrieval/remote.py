@@ -15,8 +15,12 @@ def generate_urls(start_year, end_year):
     """
         generates URLs for each file hosted at the URL stub https://files.pushshift.io/reddit/comments/ and returns them as a list. Primary purpose is to handle slight differences
         in dates and file extensions.
-        args: start_year and end_year, the range of years to include in the list (end_year inclusive). Set start_year = end_year if only one year is desired.
-        returns: url_list, a list of generated URLs
+
+        set start_year = end_year to return one year of posts.
+
+        :param start_year: the first year of posts to include
+        :param end_year: the final year of posts to include (inclusive)
+        :returns url_list: a list of generated URLs
     """
 
     # Validate both args are integers and the range of year
@@ -70,10 +74,11 @@ def generate_urls(start_year, end_year):
 def get_file(url, return_encoding='binary', verbose=True):
     """
     Retrieves a file from the supplied URL using the requests library.
-    args:
-      url: the URL specifying the resource to be retrieved
-    returns:
-      The content of the request response
+    
+    :param url: the URL specifying the resource to be retrieved
+    :param return_encoding: the encoding used for the return value ('binary' or 'text'), defaulting to 'text'.
+    :param verbose: whether to print the response code and response reason returned by the requested resource
+    :returns: a Response.content object containing the content of the request response
     """
 
     # Validate return_encoding has legal value
@@ -108,13 +113,10 @@ def get_file(url, return_encoding='binary', verbose=True):
 
 def unzip_bz2_file_to_text(zipped_file):
     """
-    Decompresses the supplied file, which must be in bzip2 format.
-    Requires the bz2 library.
-    args:
-      zipped_file: the compressed file in bzip2 format
-    returns:
-      unzipped_file: a (potentially very long) string containing the
-      uncompressed file contents.
+    Decompresses the supplied file, which must be in bzip2 format. Requires the bz2 library.
+    
+    :param zipped_file: the compressed file to process in bzip2 format
+    :returns the unzipped file data, as a (potentially very long) string
     """
 
     try:

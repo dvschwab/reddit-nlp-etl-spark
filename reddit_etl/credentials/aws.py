@@ -5,14 +5,11 @@ AWS_SECRET_KEY = 1
 
 def load_aws_credentials_from_file(credential_location, profile):
     """
-        Loads AWS credentials from the credential file, returning a two-element list containing the access key and the secret key. Expects file to contain only the profile name, access key,
-        and secret key (in that order) with no intervening newlines. Files with multiple profiles are not currently supported, but may be supported at a future date.
-            args:
-                credential_location: the location of the credentials file
-                profile: the profile to verify
-                (note that for security, neither of these are set to the boto3 defaults and must be passed even they are the default values)
-        returns:
-            credential_list: a two-element list containing (in order) the AWS access key and the AWS secret key
+        Loads AWS credentials from the credential file, returning a two-element list containing the access key and the secret key. Expects file to contain only the profile name, access key, and secret key (in that order) with no intervening newlines. Files with multiple profiles are not currently supported, but may be supported at a future date.
+        
+        :param credential_location: the location of the credentials file
+        :param profile: the profile to verify
+        :returns credential_list: a two-element list containing (in order) the AWS access key and the AWS secret key
     """
 
     # Open the credentials file and retrieve the keys
