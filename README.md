@@ -10,3 +10,6 @@ To facillitate storing the calculated TF-IDF scores in HBase, the Spark cluster 
 
 ## Update 8/11/2021
 Code has passed initial tests on Docker spark instance. Now building a multi-container app with a Spark gateway (i.e. ubuntu server), Spark, and HDFS for more extensive local testing before attempting deployment to AWS.
+
+## Update 11/2023
+This project is currently idle and unlikely to be completed, as I have many other projects to work on. Feel free to use any of the code or logic in your own projects (subject to the license). Good luck!
